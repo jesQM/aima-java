@@ -4,6 +4,7 @@ import aima.core.search.framework.Metrics;
 import aima.core.search.framework.Node;
 import aima.core.search.framework.NodeFactory;
 import aima.core.search.framework.problem.Problem;
+import aima.core.search.informed.EvaluationFunction;
 
 import java.util.Optional;
 import java.util.Queue;
@@ -27,10 +28,16 @@ public abstract class QueueSearch<S, A> {
 	public static final String METRIC_QUEUE_SIZE = "queueSize";
 	public static final String METRIC_MAX_QUEUE_SIZE = "maxQueueSize";
 	public static final String METRIC_PATH_COST = "pathCost";
+	public static final String METRIC_NODES_EXPANDED_REINSERTED_IN_FRONTIER = "reinserted"; // Ejercicio 5
+	public static final String METRIC_NODES_RECTIFIED_DUPLICATED_IN_FRONTIER = "rectifiedDuped"; // Ejercicio 5
+	public static final String METRIC_TIME_TAKEN = "timeTakenMs"; // Ejercicio 6
 
 	final protected NodeFactory<S, A> nodeFactory;
 	protected boolean earlyGoalTest = false;
 	protected Metrics metrics = new Metrics();
+
+
+	public EvaluationFunction<S, A> evalFn; //ejercicio 4
 
 	/** Stores the provided node expander and adds a node listener to it. */
 	protected QueueSearch(NodeFactory<S, A> nodeFactory) {
@@ -81,6 +88,9 @@ public abstract class QueueSearch<S, A> {
 		metrics.set(METRIC_QUEUE_SIZE, 0);
 		metrics.set(METRIC_MAX_QUEUE_SIZE, 0);
 		metrics.set(METRIC_PATH_COST, 0);
+		metrics.set(METRIC_NODES_EXPANDED_REINSERTED_IN_FRONTIER, 0); // Ejercicio 5
+		metrics.set(METRIC_NODES_RECTIFIED_DUPLICATED_IN_FRONTIER, 0); // Ejercicio 5
+		metrics.set(METRIC_TIME_TAKEN, 0); // Ejercicio 6
 	}
 
 	protected void updateMetrics(int queueSize) {
@@ -95,4 +105,5 @@ public abstract class QueueSearch<S, A> {
 		metrics.set(METRIC_PATH_COST, node.getPathCost());
 		return Optional.of(node);
 	}
+	
 }
