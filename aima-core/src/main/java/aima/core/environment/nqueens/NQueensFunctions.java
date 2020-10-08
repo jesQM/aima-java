@@ -100,4 +100,16 @@ public class NQueensFunctions {
     public static double getNumberOfAttackingPairs(Node<NQueensBoard, QueenAction> node) {
         return node.getState().getNumberOfAttackingPairs();
     }
+    
+    public static double getNullHeuristic(Node<NQueensBoard, QueenAction> node) {
+    	return 0;
+    }
+    
+    /**
+     * ( n - k ) / P
+     */
+    public static double getIncrementalProbabilityHeuristic(Node<NQueensBoard, QueenAction> node) {
+    	NQueensBoard state = node.getState();
+    	return ( state.getSize() - state.getNumberOfQueensOnBoard() ) / state.getIncrementalSquaresUnderAttackOverFreeSpaces();
+    }
 }
