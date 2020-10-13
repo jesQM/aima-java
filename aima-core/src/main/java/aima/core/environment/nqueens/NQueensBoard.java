@@ -135,6 +135,39 @@ public class NQueensBoard {
 
 	}
 
+	
+	/**
+	 * Probability of success on incremental approach
+	 */
+	public float getIncrementalSquaresUnderAttackOverFreeSpaces() {
+		if (getNumberOfQueensOnBoard() == getSize()) return 1; // Final state
+		
+		int a = getIncrementalNumberOfSquaresAttacked();
+		int free = getIncrementalNumberOfFreeSpacesLeft();
+		if (free == 0) return Float.POSITIVE_INFINITY; // No substates
+		
+		return getIncrementalNumberOfSquaresAttacked() / getIncrementalNumberOfFreeSpacesLeft();
+	}
+	
+	private int getIncrementalNumberOfSquaresAttacked() {
+		int result = 0;
+		
+		for (int x = 0; x < squares.length; x++) {
+			for (int y = getNumberOfQueensOnBoard()+1; y < squares.length; y++) {
+				if (isSquareUnderAttack(new XYLocation(x, y))) result++;
+			}
+		}
+		
+		return result;
+	}
+	
+	private int getIncrementalNumberOfFreeSpacesLeft() {
+		int x = getSize();
+		int y = getSize() - getNumberOfQueensOnBoard();
+		
+		return x * y;
+	}
+	
 	public int getNumberOfAttackingPairs() {
 		return getQueenPositions().stream().mapToInt(this::getNumberOfAttacksOn).sum() / 2;
 	}
